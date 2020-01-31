@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<body>
+<h1 style="text-align: center;">Lavoro<br>
+</h1>
+Sviluppare un'applicazione che funga da portale per la pubblicazione di inserzioni relative a offerte di lavoro e curriculum 
+e ne permetta la ricerca favorendo in tal modo l'incontro domanda-offerta. Tutte le classi devono essere contenute nel package "lavoro".<br>
+
+<hr style="width: 100%; height: 2px;">
+
+<h2>R1 - Inserzioni, offerte di lavoro e curriculum</h2>
+L'applicazione viene gestita tramite un'istanza della classe <b>Portale</b>. Il portale permette di pubblicare inserzioni rappresentate
+dalla classe <b>Inserzione</b>. Un'inserzione e' identificata da un codice numerico progressivo a partire da 10.000 assegnato automaticamente dal 
+sistema all'atto della pubblicazione. Sono possibili due tipi di inserzione, rappresentati rispettivamente dalle classi
+<b>OffertaDiLavoro</b> e <b>Curriculum</b> derivate da Inserzione. 
+<br>
+Un'offerta di lavoro registra le informazioni relative al datore di lavoro, alla figura professionale ricercata, alla sede di 
+attivita', alle date di inizio e fine validita' dell'offerta stessa ed al numero di posizioni aperte. Si assuma che tutte
+le date siano rappresentate come stringhe nel formato "AAAAMMGG". Il metodo <b>decrementaPosizioniAperte()</b> permette di diminuire
+di un'unita' (ma senza scendere sotto lo zero) il numero di posizioni aperte. Il metodo <b>setDataFineValidita()</b> consente invece
+di estendere la data di fine validita' dell'offerta, a patto che la data passata come parametro sia successiva alla data di fine
+validita' attualmente impostata.
+<br>
+Un curriculum memorizza invece il codice fiscale del soggetto alla ricerca di lavoro, nome, cognome, data di nascita e residenza. 
+<br>
+Il metodi <b>aggiungiOffertaDiLavoro()</b> e <b>aggiungiCurriculum()</b> della classe Portale consentono rispettivamente di pubblicare
+una nuova offerta di lavoro o un nuovo curriculum e restituiscono un intero corrispondente al codice progressivo assegnato.
+<br>
+Il metodo <b>getInserzione()</b> riceve come parametro il codice di una inserzione e restituisce l'oggetto Inserzione corrispondente. 
+Mediante il metodo <b>getCurriculum()</b> e' invece possibile ottenere un riferimento all'oggetto Curriculum identificato dal codice
+fiscale passato come parametro (si assuma a tal proposito che non possano esservi due curriculum caratterizzati dallo stesso codice 
+fiscale). Mediante il metodo <b>rimuoviInserzione()</b> e' possibile rimuovere l'inserzione il cui codice e' passato come parametro.  
+Nel caso in cui il codice passato come parametro ai tre precedenti metodi sia inesistente viene scatenata un'eccezione di tipo 
+<b>InserzioneInesistenteException</b>.
+<br>
+Il metodo <b>elencoInserzioni()</b> restituisce un elenco di oggetti di classe Inserzione ordinati per codice numerico. I metodi
+<b>elencoOfferteDiLavoro()</b> ed <b>elencoCurriculum()</b> restituiscono invece rispettivamente un elenco di offerte di lavoro
+e di curriculum. Nel primo caso, l'elenco e' ordinato per data di inizio e fine validita' dell'oferta. Nel secondo caso, l'ordinamento 
+e' invece alfabetico per cognome, nome e residenza. Si assumano sempre ordinamenti crescenti.
+
+<h2>R2 - Competenze</h2>
+Per ogni inserzione e' possibile specificare un certo numero di competenze richieste (nel caso di un'offerta di lavoro), o possedute
+(nel caso di un curriculum). A tal fine, occorre utilizzare i metodi <b>aggiungiCompetenzaRichiesta()</b> e <b>aggiungiCompetenzaPosseduta()</b>
+rispettivamente delle classi OffertaDiLavoro e Curriculum. Essi ricevono come parametri la competenza da aggiungere (rappresentata da 
+un oggetto String) ed il relativo livello (posseduto o richiesto, rappresentato da un intero in una scala da 1 a 5). 
+Nella stessa inserzione non sono ammesse competenze duplicate. L'unico risultato ottenuto dal tentare di aggiungere una competenza 
+gia' esistente e' quindi, eventualmente, quello di cambiarne il livello. Il cercare invece di aggiungere competenze con un livello
+al di fuori del suddetto intervallo non avrebbe alcun effetto.
+<br>
+Il metodo <b>elencoCompetenze()</b> della classe Inserzione restituisce l'elenco delle competenze associate all'inserzione (senza un
+ordinamento preciso). Mediante il metodo <b>competenzaPresente()</b> e' possibile verificare se un'iscrizione abbia effettivamente associata la
+particolare competenza passata come parametro. Il metodo restituisce "true" in caso affermativo, "false" altrimenti. Mediante
+il metodo <b>getLivelloCompetenza()</b> e' possibile ottenere il livello posseduto o richiesto di una particolare competenza nella
+particolare inserzione. Nel caso in cui la competenza passata come parametro non sia tra quelle specificate per l'inserzione viene
+scatenata una eccezione di tipo <b>CompetenzaAssenteException</b>. 
+<br>
+Metodi analoghi nella classe Portale denominati <b>elencoCompetenze()</b> e <b>getLivelloCompetenza()</b> permettono rispettivamente 
+di ottenere l'elenco delle competenze associate all'inserzione passata come parametro ed il relativo livello (con lo stesso 
+ordinamento e la generazione della stesso tipo di eccezione sopra menzionati). 
+
+<h2>R3 - Incontro domanda e offerta</h2>
+Il sistema e' progettato per favorire l'incontro della domanda e dell'offerta di lavoro permettendo di determinare, data un'offerta, i
+curriculum in grado di soddisfarla e, dato un curriculum, le offerte idonee. Un curriculum soddisfa i requisiti di un'offerta se il 
+soggetto possiede (almeno) tutte le competenze specificate nell'offerta con un livello uguale o superiore. Analogamente, dato un 
+curriculum, un offerta e' da considerarsi idonea se non richiede competenze non in possessp dal soggetto ed il livello necessario non e'
+superiore a quello posseduto. 
+<br>
+Le funzionalita' sopra descritte sono implementate attraverso il metodo <b>cerca()</b> della classe Portale. Il metodo riceve come
+parametro il codice numerico che identifica un'inserzione e si comporta diversamente in base al fatto che si tratti di un'offerta di lavoro o di un 
+curriculum. In particolare, quando viene passata un'offerta di lavoro, il metodo restituisce un'elenco di inserzioni corrispondenti 
+ai soli curriculum in grado di soddisfarne i requisiti dell'offerta. Quando viene passato un curriculum, restituisce invece un 
+elenco di inserzioni corrispondenti alle sole offerte idonee. 
+
+<h2>R4 - Caricamento da file</h2>
+Il metodo <b>leggiFile()</b> della classe Portale permette di leggere da file le informazioni relative alle inserzioni. Il metodo riceve 
+come parametro il percorso di un file testuale organizzato per righe, dove ogni riga puo' riportare le informazioni relative ad 
+un'offerta di lavoro o ad un curriculum. 
+<br>
+Le righe relative ad un'offerta di lavoro iniziano con la lettera "o" (maiuscola o minuscola), seguita dalle informazioni relative 
+al datore di lavoro, alla figura professionale ricercata, alla sede di attivita', alla data di inizio ed alla data di fine validita' 
+ed al numero di posizioni aperte. Le righe relative ad un curriculum iniziano con la lettera "c" (o "C"), seguita dal codice fiscale, 
+dal nome, dal cognome, dalla data di nascita e dalla residenza del soggetto.
+<br>
+Gli elementi di ciascuna riga sono separati gli uni dagli altri tramite il carattere ";". Si eliminino eventuali spazi aggiuntivi e 
+si ignorino le righe con un formato errato. 
+
+<hr style="width: 100%; height: 2px;"><br>
+</body>
+</html>

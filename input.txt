@@ -1,0 +1,4 @@
+C;VRDGLO66Y12T567W;Giulio;Verdi;19660212;    Milano
+O;Maglie al Sole;Sarto;Savona;20120814;20120905;2
+O;Zuppe al vapore;Assaggiatore;20120423;
+c;VRDANN58R24N754S;   Anna;Verdi;19580624;Torino
